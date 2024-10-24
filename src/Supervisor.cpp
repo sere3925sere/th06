@@ -1149,7 +1149,7 @@ u8 *th06::Controller::GetControllerState()
             // TODO: is there no "HVar2 =" in ZUN code?
             if (SUCCEEDED(HVar2))
             {
-				memcpy(&g_ControllerData, local_15c.rgbButtons, sizeof(local_15c.rgbButtons));
+                memcpy(&g_ControllerData, local_15c.rgbButtons, sizeof(local_15c.rgbButtons));
             }
         }
     }
