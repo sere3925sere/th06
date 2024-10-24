@@ -1122,7 +1122,7 @@ u8 *th06::Controller::GetControllerState()
         if (MVar1 == 0)
         {
             local_3c = joyinfo.dwButtons;
-            for (local_40 = 0; local_40 < 0x20; local_40 = local_40 + 1)
+            for (local_40 = 0; local_40 < 32; local_40 += 1)
             {
                 if ((local_3c & 1) != 0)
                 {
