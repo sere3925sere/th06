@@ -1089,21 +1089,15 @@ ZunResult Supervisor::PlayAudio(char *path)
 }
 #pragma optimize("", on)
 
-// u32 g_ControllerData[32];
 DIFFABLE_STATIC_ARRAY(u32, 32, g_ControllerData)
 
 #pragma optimize("s", on)
-u8 *th06::Controller::GetControllerState()
 // this is for rebinding keys
+u8 *th06::Controller::GetControllerState()
 {
-    // DWORD_PTR cookie;
     MMRESULT MVar1;
     HRESULT HVar2;
     u32 *piVar3;
-    int i;
-    u32 puVar3;
-    joyinfoex_tag *joyinfo_ptr;
-    u32 *puVar4;
     int local_retryCount;
     DIJOYSTATE2 local_15c;
     int local_44;
@@ -1115,7 +1109,7 @@ u8 *th06::Controller::GetControllerState()
     if (g_Supervisor.controller == NULL)
     {
         // TODO: not tested
-        memset(joyinfo, 0, sizeof(JOYINFOEX));
+        memset(&joyinfo, 0, sizeof(JOYINFOEX));
         joyinfo.dwSize = sizeof(JOYINFOEX);
         joyinfo.dwFlags = JOY_RETURNALL;
         MVar1 = joyGetPosEx(0, &joyinfo);
@@ -1142,7 +1136,7 @@ u8 *th06::Controller::GetControllerState()
             local_44 = g_Supervisor.controller->Acquire();
             do
             {
-                if (local_44 != -0x7ff8ffe2)
+                if (local_44 != DIERR_INPUTLOST)
                     break;
                 local_44 = g_Supervisor.controller->Acquire();
                 utils::DebugPrint2("error : DIERR_INPUTLOST %d\n", local_retryCount);
@@ -1155,19 +1149,11 @@ u8 *th06::Controller::GetControllerState()
             // TODO: is there no "HVar2 =" in ZUN code?
             if (SUCCEEDED(HVar2))
             {
-                puVar3 = (int)local_15c.rgbButtons;
-                puVar4 = g_ControllerData;
-                for (i = 0x20; i != 0; i = i + -1)
-                {
-                    *puVar4 = *(int *)puVar3;
-                    puVar3 = puVar3 + 4;
-                    puVar4 = puVar4 + 1;
-                }
+				memcpy(&g_ControllerData, local_15c.rgbButtons, sizeof(local_15c.rgbButtons));
             }
         }
     }
     piVar3 = g_ControllerData;
-    //__security_check_cookie(cookie);
     return (byte *)piVar3;
 }
 #pragma optimize("", on)
