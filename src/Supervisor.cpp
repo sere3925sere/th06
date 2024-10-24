@@ -1117,7 +1117,7 @@ u8 *th06::Controller::GetControllerState()
         // TODO: not tested
         memset(joyinfo, 0, sizeof(JOYINFOEX));
         joyinfo.dwSize = sizeof(JOYINFOEX);
-        joyinfo.dwFlags = 0xff;
+        joyinfo.dwFlags = JOY_RETURNALL;
         MVar1 = joyGetPosEx(0, &joyinfo);
         if (MVar1 == 0)
         {
