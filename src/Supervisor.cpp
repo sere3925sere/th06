@@ -1089,14 +1089,14 @@ ZunResult Supervisor::PlayAudio(char *path)
 }
 #pragma optimize("", on)
 
-//u32 g_ControllerData[32];
+// u32 g_ControllerData[32];
 DIFFABLE_STATIC_ARRAY(u32, 32, g_ControllerData)
 
 #pragma optimize("s", on)
-u8* th06::Controller::GetControllerState()
-//this is for rebinding keys
+u8 *th06::Controller::GetControllerState()
+// this is for rebinding keys
 {
-    //DWORD_PTR cookie;
+    // DWORD_PTR cookie;
     MMRESULT MVar1;
     HRESULT HVar2;
     u32 *piVar3;
@@ -1112,46 +1112,58 @@ u8* th06::Controller::GetControllerState()
     joyinfoex_tag joyinfo;
 
     memset(&g_ControllerData, 0, sizeof(g_ControllerData));
-    if (g_Supervisor.controller == (LPDIRECTINPUTDEVICE8A)0x0) {
-        //TODO: not tested
+    if (g_Supervisor.controller == (LPDIRECTINPUTDEVICE8A)0x0)
+    {
+        // TODO: not tested
         joyinfo_ptr = &joyinfo;
-        for (i = 13; i != 0; i = i + -1) {
+        for (i = 13; i != 0; i = i + -1)
+        {
             joyinfo_ptr->dwSize = 0;
             joyinfo_ptr = (joyinfoex_tag *)&joyinfo_ptr->dwFlags;
         }
         joyinfo.dwSize = 0x34;
         joyinfo.dwFlags = 0xff;
-        MVar1 = joyGetPosEx(0,&joyinfo);
-        if (MVar1 == 0) {
+        MVar1 = joyGetPosEx(0, &joyinfo);
+        if (MVar1 == 0)
+        {
             local_3c = joyinfo.dwButtons;
-            for (local_40 = 0; local_40 < 0x20; local_40 = local_40 + 1) {
-                if ((local_3c & 1) != 0) {
+            for (local_40 = 0; local_40 < 0x20; local_40 = local_40 + 1)
+            {
+                if ((local_3c & 1) != 0)
+                {
                     *(u8 *)((int)g_ControllerData + local_40) = 0x80;
                 }
                 local_3c = local_3c >> 1;
             }
         }
     }
-    else {
+    else
+    {
         HVar2 = g_Supervisor.controller->Poll();
-        if (FAILED(HVar2)) {
+        if (FAILED(HVar2))
+        {
             local_retryCount = 0;
             utils::DebugPrint2("error : DIERR_INPUTLOST\n");
             local_44 = g_Supervisor.controller->Acquire();
-            do {
-                if (local_44 != -0x7ff8ffe2) break;
+            do
+            {
+                if (local_44 != -0x7ff8ffe2)
+                    break;
                 local_44 = g_Supervisor.controller->Acquire();
-                utils::DebugPrint2("error : DIERR_INPUTLOST %d\n",local_retryCount);
+                utils::DebugPrint2("error : DIERR_INPUTLOST %d\n", local_retryCount);
                 local_retryCount++;
             } while (local_retryCount < 400);
         }
-        else {
-            HVar2 = g_Supervisor.controller->GetDeviceState(0x110,&local_15c);
-            //TODO: is there no "HVar2 =" in ZUN code?
-            if (SUCCEEDED(HVar2)) {
+        else
+        {
+            HVar2 = g_Supervisor.controller->GetDeviceState(0x110, &local_15c);
+            // TODO: is there no "HVar2 =" in ZUN code?
+            if (SUCCEEDED(HVar2))
+            {
                 puVar3 = (int)local_15c.rgbButtons;
                 puVar4 = g_ControllerData;
-                for (i = 0x20; i != 0; i = i + -1) {
+                for (i = 0x20; i != 0; i = i + -1)
+                {
                     *puVar4 = *(int *)puVar3;
                     puVar3 = puVar3 + 4;
                     puVar4 = puVar4 + 1;
