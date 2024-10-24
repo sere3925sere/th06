@@ -1112,7 +1112,7 @@ u8 *th06::Controller::GetControllerState()
     joyinfoex_tag joyinfo;
 
     memset(&g_ControllerData, 0, sizeof(g_ControllerData));
-    if (g_Supervisor.controller == (LPDIRECTINPUTDEVICE8A)0x0)
+    if (g_Supervisor.controller == NULL)
     {
         // TODO: not tested
         joyinfo_ptr = &joyinfo;
