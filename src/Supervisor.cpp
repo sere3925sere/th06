@@ -1115,12 +1115,7 @@ u8 *th06::Controller::GetControllerState()
     if (g_Supervisor.controller == NULL)
     {
         // TODO: not tested
-        joyinfo_ptr = &joyinfo;
-        for (i = 13; i != 0; i = i + -1)
-        {
-            joyinfo_ptr->dwSize = 0;
-            joyinfo_ptr = (joyinfoex_tag *)&joyinfo_ptr->dwFlags;
-        }
+        memset(joyinfo, 0, sizeof(JOYINFOEX));
         joyinfo.dwSize = 0x34;
         joyinfo.dwFlags = 0xff;
         MVar1 = joyGetPosEx(0, &joyinfo);
