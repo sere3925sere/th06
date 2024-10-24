@@ -1109,7 +1109,7 @@ u8 *th06::Controller::GetControllerState()
     int local_44;
     u32 local_40;
     u32 local_3c;
-    joyinfoex_tag joyinfo;
+    JOYINFOEX joyinfo;
 
     memset(&g_ControllerData, 0, sizeof(g_ControllerData));
     if (g_Supervisor.controller == NULL)
